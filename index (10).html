@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Travel Book — Bitácora de Viajes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf7f2;
+      --ink:     #1a1612;
+      --brown:   #6b4f35;
+      --warm:    #c8a882;
+      --accent:  #d4622a;
+      --muted:   #9a8f84;
+      --border:  rgba(107,79,53,0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 2.5rem;
+      background: rgba(250,247,242,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+
+    .nav-logo span {
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: inline-block;
+      margin-bottom: 2px;
+    }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.85rem; font-weight: 400; letter-spacing: 0.05em;
+      text-transform: uppercase; color: var(--muted);
+      text-decoration: none; transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+
+    .nav-cta {
+      background: var(--ink); color: var(--cream) !important;
+      padding: 0.5rem 1.25rem; border-radius: 2rem;
+      transition: background 0.2s !important;
+    }
+
+    .nav-cta:hover { background: var(--brown) !important; color: var(--cream) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 5rem;
+    }
+
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 4rem 3rem 4rem 4rem;
+    }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-tag::before {
+      content: ''; width: 24px; height: 1px; background: var(--accent);
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 5vw, 4.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.5rem;
+      color: var(--ink);
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--brown);
+    }
+
+    .hero-desc {
+      font-size: 1rem; font-weight: 300; line-height: 1.7;
+      color: var(--muted); max-width: 420px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions {
+      display: flex; align-items: center; gap: 1.25rem;
+    }
+
+    .btn-primary {
+      background: var(--accent); color: #fff;
+      padding: 0.85rem 2rem; border-radius: 2rem;
+      font-size: 0.875rem; font-weight: 500; letter-spacing: 0.02em;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(212,98,42,0.3);
+    }
+
+    .btn-ghost {
+      color: var(--ink); font-size: 0.875rem; font-weight: 400;
+      text-decoration: none; letter-spacing: 0.02em;
+      display: flex; align-items: center; gap: 0.4rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2px; transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-ghost:hover { color: var(--brown); border-color: var(--warm); }
+
+    .hero-stats {
+      display: flex; gap: 2.5rem; margin-top: 3.5rem;
+      padding-top: 2rem; border-top: 1px solid var(--border);
+    }
+
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 600; color: var(--ink);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.75rem; color: var(--muted);
+      letter-spacing: 0.06em; text-transform: uppercase;
+      margin-top: 0.25rem;
+    }
+
+    /* ── HERO RIGHT (feed preview) ── */
+    .hero-right {
+      background: var(--sand);
+      border-left: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      overflow: hidden; position: relative;
+    }
+
+    .feed-header {
+      padding: 1.5rem 1.5rem 1rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .feed-header h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem; font-weight: 400; color: var(--muted);
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+
+    .feed-dot {
+      width: 8px; height: 8px; background: #4caf50;
+      border-radius: 50%; animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .feed-scroll {
+      flex: 1; overflow-y: auto; padding: 1rem 1.5rem;
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+
+    .feed-scroll::-webkit-scrollbar { width: 4px; }
+    .feed-scroll::-webkit-scrollbar-track { background: transparent; }
+    .feed-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    /* ── TRIP CARD ── */
+    .trip-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: transform 0.2s, box-shadow 0.2s;
+      animation: slideUp 0.4s ease both;
+      cursor: pointer;
+    }
+
+    .trip-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(26,22,18,0.08);
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .trip-card:nth-child(2) { animation-delay: 0.1s; }
+    .trip-card:nth-child(3) { animation-delay: 0.2s; }
+    .trip-card:nth-child(4) { animation-delay: 0.3s; }
+
+    .card-img {
+      width: 100%; aspect-ratio: 16/9; object-fit: cover;
+      display: block; background: var(--sand);
+      position: relative; overflow: hidden;
+    }
+
+    .card-img-placeholder {
+      width: 100%; aspect-ratio: 16/9;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem;
+    }
+
+    .card-body { padding: 0.9rem 1rem; }
+
+    .card-user {
+      display: flex; align-items: center; gap: 0.6rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--warm); display: flex; align-items: center;
+      justify-content: center; font-size: 0.7rem; font-weight: 500;
+      color: #fff; flex-shrink: 0;
+    }
+
+    .card-user-name {
+      font-size: 0.8rem; font-weight: 500; color: var(--ink);
+    }
+
+    .card-user-loc {
+      font-size: 0.7rem; color: var(--muted);
+    }
+
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem; font-weight: 600; color: var(--ink);
+      margin-bottom: 0.35rem; line-height: 1.3;
+    }
+
+    .card-desc {
+      font-size: 0.78rem; color: var(--muted);
+      line-height: 1.5; display: -webkit-box;
+      -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+
+    .card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 0.75rem; padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .card-likes {
+      display: flex; align-items: center; gap: 0.3rem;
+      font-size: 0.75rem; color: var(--muted);
+    }
+
+    .card-likes svg { width: 13px; height: 13px; }
+
+    .card-date { font-size: 0.7rem; color: var(--warm); }
+
+    /* ── FEATURES SECTION ── */
+    .features {
+      padding: 6rem 4rem;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .feature {
+      opacity: 0; animation: fadeIn 0.5s ease forwards;
+    }
+
+    .feature:nth-child(2) { animation-delay: 0.15s; }
+    .feature:nth-child(3) { animation-delay: 0.3s; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .feature-icon {
+      font-size: 1.75rem; margin-bottom: 1rem;
+    }
+
+    .feature-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 600; color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-desc {
+      font-size: 0.875rem; color: var(--muted); line-height: 1.65;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem 4rem;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    footer p {
+      font-size: 0.8rem; color: var(--muted);
+    }
+
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-weight: 600; color: var(--brown);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { display: none; }
+
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { padding: 6rem 1.5rem 2rem; }
+      .hero-right { height: 50vh; border-left: none; border-top: 1px solid var(--border); }
+
+      .features { grid-template-columns: 1fr; padding: 3rem 1.5rem; gap: 2rem; }
+      footer { flex-direction: column; gap: 0.5rem; padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <span></span> Travel Book
+    </a>
+    <ul class="nav-links">
+      <li><a href="#explorar">Explorar</a></li>
+      <li><a href="#como">¿Cómo funciona?</a></li>
+      <li><a href="nuevo-viaje.html">Nuevo viaje</a></li>
+      <li><a href="auth.html" class="nav-cta">Iniciar sesión</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+
+    <!-- Izquierda: texto -->
+    <div class="hero-left">
+      <div class="hero-tag">Tu diario de aventuras</div>
+
+      <h1 class="hero-title">
+        Guarda cada<br>
+        <em>historia</em> de<br>
+        tus viajes
+      </h1>
+
+      <p class="hero-desc">
+        Travel Book es tu bitácora personal de viajes. Registra lugares,
+        califica experiencias, sube fotos y comparte tus aventuras con
+        el mundo — o guárdalas solo para ti.
+      </p>
+
+      <div class="hero-actions">
+        <a href="auth.html" class="btn-primary">Comenzar gratis</a>
+        <a href="#explorar" class="btn-ghost">Ver viajes ↓</a>
+      </div>
+
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num">248</div>
+          <div class="stat-label">Viajes publicados</div>
+        </div>
+        <div>
+          <div class="stat-num">63</div>
+          <div class="stat-label">Países visitados</div>
+        </div>
+        <div>
+          <div class="stat-num">89</div>
+          <div class="stat-label">Viajeros activos</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Derecha: feed de viajes -->
+    <div class="hero-right">
+      <div class="feed-header">
+        <h3>Viajes recientes</h3>
+        <div class="feed-dot"></div>
+      </div>
+
+      <div class="feed-scroll" id="explorar">
+
+        <div class="trip-card">
+          <div class="card-img-placeholder" style="background:#e8f4f0;">🇯🇵</div>
+          <div class="card-body">
+            <div class="card-user">
+              <div class="avatar" style="background:#7b9e87;">MG</div>
+              <div>
+                <div class="card-user-name">María González</div>
+                <div class="card-user-loc">📍 Tokio, Japón</div>
+              </div>
+            </div>
+            <div class="card-title">Dos semanas en Japón</div>
+            <div class="card-desc">La mezcla perfecta entre tradición y modernidad. Templos centenarios y rascacielos futuristas en la misma calle.</div>
+            <div class="card-footer">
+              <div class="card-likes">
+                <svg viewBox="0 0 24 24" fill="#d4622a"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                142 me gusta
+              </div>
+              <div class="card-date">Enero 2026</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="trip-card">
+          <div class="card-img-placeholder" style="background:#f0ebe0;">🇦🇷</div>
+          <div class="card-body">
+            <div class="card-user">
+              <div class="avatar" style="background:#b07d62;">CR</div>
+              <div>
+                <div class="card-user-name">Carlos Ruiz</div>
+                <div class="card-user-loc">📍 Patagonia, Argentina</div>
+              </div>
+            </div>
+            <div class="card-title">Trekking en la Patagonia</div>
+            <div class="card-desc">Glaciares, vientos imposibles y un silencio que solo existe en el fin del mundo. Una experiencia que cambia la vida.</div>
+            <div class="card-footer">
+              <div class="card-likes">
+                <svg viewBox="0 0 24 24" fill="#d4622a"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                98 me gusta
+              </div>
+              <div class="card-date">Diciembre 2025</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="trip-card">
+          <div class="card-img-placeholder" style="background:#e8e0f0;">🇮🇩</div>
+          <div class="card-body">
+            <div class="card-user">
+              <div class="avatar" style="background:#8b6fab;">AL</div>
+              <div>
+                <div class="card-user-name">Ana López</div>
+                <div class="card-user-loc">📍 Bali, Indonesia</div>
+              </div>
+            </div>
+            <div class="card-title">Una semana en Bali</div>
+            <div class="card-desc">Templos hindúes, arrozales en terrazas y playas de arena volcánica negra. La isla de los dioses cumple todo lo que promete.</div>
+            <div class="card-footer">
+              <div class="card-likes">
+                <svg viewBox="0 0 24 24" fill="#d4622a"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                215 me gusta
+              </div>
+              <div class="card-date">Noviembre 2025</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="trip-card">
+          <div class="card-img-placeholder" style="background:#e0ece8;">🇩🇪</div>
+          <div class="card-body">
+            <div class="card-user">
+              <div class="avatar" style="background:#5a8a6a;">PM</div>
+              <div>
+                <div class="card-user-name">Pedro Morales</div>
+                <div class="card-user-loc">📍 Bosque Negro, Alemania</div>
+              </div>
+            </div>
+            <div class="card-title">Otoño en el Bosque Negro</div>
+            <div class="card-desc">Pueblos de cuento de hadas y bosques de colores imposibles. El otoño alemán es una obra de arte natural.</div>
+            <div class="card-footer">
+              <div class="card-likes">
+                <svg viewBox="0 0 24 24" fill="#d4622a"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                76 me gusta
+              </div>
+              <div class="card-date">Octubre 2025</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="como">
+    <div class="feature">
+      <div class="feature-icon">✈️</div>
+      <div class="feature-title">Registra tus viajes</div>
+      <div class="feature-desc">Crea entradas detalladas para cada destino visitado. Agrega fechas, descripción y todos los lugares que recorriste.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">⭐</div>
+      <div class="feature-title">Califica cada lugar</div>
+      <div class="feature-desc">Dale estrellas a restaurantes, hoteles y atracciones. Tus reseñas ayudan a otros viajeros a planear sus aventuras.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🔒</div>
+      <div class="feature-title">Público o privado</div>
+      <div class="feature-desc">Tú decides quién ve tus viajes. Comparte con la comunidad o úsalo como tu álbum personal de recuerdos.</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Travel Book</div>
+    <p>Proyecto escolar — Desarrollo de Aplicaciones Web</p>
+    <p>© 2026</p>
+  </footer>
+
+</body>
+</html>
